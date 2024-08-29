@@ -1,9 +1,8 @@
 const nodemailer = require("nodemailer");
 const schedule = require("node-schedule");
+const { template } = require("./htmlTemplate");
 const path = require("path");
 const sendMail = async (mail, result) => {
-
- 
   var transtorter = await nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -12,13 +11,20 @@ const sendMail = async (mail, result) => {
     },
   });
 
-  result = JSON.stringify(result);
+  //result = JSON.stringify(result);
 
   var mailOptions = {
     from: process.env.userMail,
     to: "shabnambegum227@gmail.com" || mail,
     subject: "sending mail using node js",
-    text: `this is your fine amount \n ${result}`,
+    text: template(result),
+    attachments: [
+      {
+        filename: "feestructure.pdf",
+        path: path.join(__dirname, "feestructure.pdf"),
+        contentType: "application/pdf",
+      },
+    ],
   };
 
   let passMail = await transtorter.sendMail(mailOptions);
@@ -57,11 +63,11 @@ const managementMail = async (mail, result) => {
     };
   }
 
-  //    //schedule.scheduleJob("0 15 32 *", async () => {
+  //    schedule.scheduleJob("0 15 32 *", async () => {
   //     let passMail = await transtorter.sendMail(mailOptions);
   //     if (passMail) return "Email sent successfully";
   //     else return false;
-  // //  })
+  //  })
 };
 
 const pendingStudent = async (mail, result) => {
