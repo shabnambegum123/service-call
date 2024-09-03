@@ -1,7 +1,9 @@
 const template = async (result) => {
+
+    console.log("result" , result)
     
   var map = result.map((x, index) => {
-    let htmlTemplate = `<div key={index}>
+    let htmlTemplate = `<div key=${index}>
         <table>
           <tr>
             <th>SerialNo</th>
@@ -26,8 +28,9 @@ const template = async (result) => {
       </div>`;
 
     return htmlTemplate;
-  });
-  return map;
+  })
+  return map.join(" ");
 };
 
-module.exports = { template };
+
+module.exports = {template}
