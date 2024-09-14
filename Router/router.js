@@ -8,7 +8,13 @@ const {
   pendingstudent,
   management,
   forgetPassword,
-  pdfMail
+  pdfMail,
+  notificationTable,
+  notificationTableUpdate,
+  notificationTableGet,
+  notificationTableDelete,
+  fetchingData
+
 } = require("../controller/controller");
 
 router.post("/send/Mail", createPost);
@@ -20,4 +26,9 @@ router.delete("/delete/post", deletePost);
 router.post("/management/send",management)
 router.post("/forgetPassword/send",forgetPassword)
 router.post("/pdf/url",pdfMail)
+router.post("/create/notification",notificationTable)
+router.put("/update/notification",notificationTableUpdate)
+router.get("/get/notification",notificationTableGet)
+router.delete("/delete/notification",notificationTableDelete)
+router.get("/fetch/data",fetchingData)
 module.exports = router;
