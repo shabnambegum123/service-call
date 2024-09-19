@@ -10,13 +10,34 @@ const {
   notificationUpdateService,
   notificationGetService,
   notificationTableDeleteService,
-  fetchingDataService
+  fetchingDataService,
+  sendMailService,
 } = require("../service/service");
 const createPost = async (req, res) => {
   let params = req.body.find;
-   let EmailId =  req.body.EmailId;
+  let EmailId = req.body.EmailId;
   const result = await createPostService(EmailId, params);
-  console.log("result" , result)
+  console.log("result", result);
+  if (result.status) {
+    res.status(result.statusCode).json({
+      status: result.statusCode,
+      message: result.message,
+      data: result.data,
+    });
+  } else {
+    res.status(result.statusCode).json({
+      status: result.statusCode,
+      message: result.message,
+      data: result.data,
+    });
+  }
+};
+
+const sendMaiData = async (req, res) => {
+  let params = req.body.find;
+  let EmailId = req.body.EmailId;
+  const result = await sendMailService(EmailId, params);
+  console.log("result", result);
   if (result.status) {
     res.status(result.statusCode).json({
       status: result.statusCode,
@@ -33,7 +54,7 @@ const createPost = async (req, res) => {
 };
 
 const pendingstudent = async (req, res) => {
-  console.log("wdn qwef" , req.body.find)
+  console.log("wdn qwef", req.body.find);
   let params = req.body.find.toString();
   let EmailId = "kishore.t@doodleblue.in";
   console.log(params);
@@ -55,8 +76,9 @@ const pendingstudent = async (req, res) => {
 
 const management = async (req, res) => {
   let params = req.body.find;
-  let EmailId = req.body.EmailId ;
-  const result = await managementMailService(EmailId, params);
+  let EmailId = req.body.EmailId;
+  
+  const result = await managementMailService(params, EmailId);
   if (result.status) {
     res.status(result.statusCode).json({
       status: result.statusCode,
@@ -70,14 +92,13 @@ const management = async (req, res) => {
       data: result.data,
     });
   }
-}
+};
 
-const forgetPassword = async (req,res) =>{
-  
+const forgetPassword = async (req, res) => {
   let params = req.body.find;
-  let EmailId = req.body.EmailId ;
-  
-  const result = await forgetPasswordService (EmailId, params);
+  let EmailId = req.body.EmailId;
+
+  const result = await forgetPasswordService(EmailId, params);
   if (result.status) {
     res.status(result.statusCode).json({
       status: result.statusCode,
@@ -91,15 +112,13 @@ const forgetPassword = async (req,res) =>{
       data: result.data,
     });
   }
-}
+};
 
-
-const pdfMail = async (req,res) =>{
-  
+const pdfMail = async (req, res) => {
   let params = req.body.find;
-  let EmailId = req.body.EmailId ;
-    console.log(params,EmailId)
-  const result = await pdfMailService (EmailId, params);
+  let EmailId = req.body.EmailId;
+  console.log(params, EmailId);
+  const result = await pdfMailService(EmailId, params);
   if (result.status) {
     res.status(result.statusCode).json({
       status: result.statusCode,
@@ -113,129 +132,122 @@ const pdfMail = async (req,res) =>{
       data: result.data,
     });
   }
-}
+};
 
-const notificationTable = async (req,res) =>{
- try {
-  
-  let params = req?.body?.data?.data
- console.log(params)
-  const result = await notificationTableService (params);
-  if (result.status) {
-    res.status(result.statusCode).json({
-      status: result.statusCode,
-      message: result.message,
-      data: result.data,
-    });
-  } else {
-    res.status(result.statusCode).json({
-      status: result.statusCode,
-      message: result.message,
-      data: result.data,
-    });
+const notificationTable = async (req, res) => {
+  try {
+    let params = req?.body?.data?.data;
+    console.log(params);
+    const result = await notificationTableService(params);
+    if (result.status) {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    } else {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    }
+  } catch (error) {
+    console.log("aedvqwef", error);
   }
- } catch (error) {
-  console.log("aedvqwef" , error)
- }
-}
+};
 
-  
-  const  notificationTableUpdate = async (req,res) =>{
-    try {
-  
-      let params = req?.body?.data?.data
-     
-      const result = await notificationUpdateService (params);
-      if (result.status) {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      } else {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      }
-     } catch (error) {
-      console.log("aedvqwef" , error)
-     }
+const notificationTableUpdate = async (req, res) => {
+  try {
+    let params = req?.body?.data?.data;
+
+    const result = await notificationUpdateService(params);
+    if (result.status) {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    } else {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    }
+  } catch (error) {
+    console.log("aedvqwef", error);
   }
+};
 
+const notificationTableGet = async (req, res) => {
+  try {
+    let params = req?.body?.data?.data;
 
-  const  notificationTableGet = async (req,res) =>{
-    try {
-  
-      let params = req?.body?.data?.data
-       
-      const result = await notificationGetService (params);
-      if (result.status) {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      } else {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      }
-     } catch (error) {
-      console.log("aedvqwef" , error)
-     }
+    const result = await notificationGetService(params);
+    if (result.status) {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    } else {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    }
+  } catch (error) {
+    console.log("aedvqwef", error);
   }
+};
 
-  const   notificationTableDelete = async (req,res) =>{
-    try {
-      
-      let params = req?.body?.data?.data
-     
-      const result = await notificationTableDeleteService (params);
-      if (result.status) {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      } else {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      }
-     } catch (error) {
-      console.log("aedvqwef" , error)
-     }
-  }
+const notificationTableDelete = async (req, res) => {
+  try {
+    let params = req?.body?.data?.data;
 
-  const   fetchingData = async (req,res) =>{
-    try {
-  
-      let params = req?.body?.data?.data
-     
-      const result = await fetchingDataService (params);
-      if (result.status) {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      } else {
-        res.status(result.statusCode).json({
-          status: result.statusCode,
-          message: result.message,
-          data: result.data,
-        });
-      }
-     } catch (error) {
-      console.log("aedvqwef" , error)
-     }
+    const result = await notificationTableDeleteService(params);
+    if (result.status) {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    } else {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    }
+  } catch (error) {
+    console.log("aedvqwef", error);
   }
+};
+
+const fetchingData = async (req, res) => {
+  try {
+    let params = req?.body?.data?.data;
+
+    const result = await fetchingDataService(params);
+    if (result.status) {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    } else {
+      res.status(result.statusCode).json({
+        status: result.statusCode,
+        message: result.message,
+        data: result.data,
+      });
+    }
+  } catch (error) {
+    console.log("aedvqwef", error);
+  }
+};
 const getPosts = async () => {
   // try {
   //   const result = await axios.get(url);
@@ -289,5 +301,6 @@ module.exports = {
   notificationTableUpdate,
   notificationTableGet,
   notificationTableDelete,
-  fetchingData
+  fetchingData,
+  sendMaiData,
 };

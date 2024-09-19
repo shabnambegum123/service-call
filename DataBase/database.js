@@ -13,3 +13,4 @@ const sequelize = new Sequelize(
 sequelize.authenticate().then(()=>{console.log('Database Connected')}).catch((error)=>{console.log(error)})
 
 module.exports = sequelize
+
